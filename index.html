@@ -1,375 +1,374 @@
 <!DOCTYPE html>
+
 <html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <title>Expense Tracker</title>
-  <link rel="icon" href="favicon.png" type="image/png"/>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="style.css" rel="stylesheet"/>
- </head>
- <body>
-  <h1>
+<head>
+<meta charset="utf-8"/>
+<title>
+   Expense Tracker
+  </title>
+<link href="favicon.png" rel="icon" type="image/png"/>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+<h1>
    Expense Tracker
    <a href="#" id="open-changelog" style="margin-left: 20px; font-size: 16px;">
     Changelog
    </a>
-  </h1>
-  <div id="summary-cards" style="display: flex; gap: 20px; margin-bottom: 20px;">
-   <div class="card">
-    <h3>
+<a href="#" id="open-template" style="margin-left: 20px; font-size: 16px;">Template</a></h1>
+<div id="summary-cards" style="display: flex; gap: 20px; margin-bottom: 20px;">
+<div class="card">
+<h3>
      Total Pengeluaran
     </h3>
-    <p id="total-amount">
+<p id="total-amount">
      Rp 0
     </p>
-   </div>
-   <div class="card">
-    <h3>
+</div>
+<div class="card">
+<h3>
      Transaksi
     </h3>
-    <p id="total-transactions">
+<p id="total-transactions">
      0 item
     </p>
-   </div>
-   <div class="card">
-    <h3>
+</div>
+<div class="card">
+<h3>
      Upload Data
     </h3>
-    <label for="upload-csv">
+<label for="upload-csv">
      CSV:
     </label>
-    <br/>
-    <input accept=".csv" id="upload-csv" type="file"/>
-    <br/>
-    <br/>
-    <label for="upload-excel">
+<br/>
+<input accept=".csv" id="upload-csv" type="file"/>
+<br/>
+<br/>
+<label for="upload-excel">
      Excel:
     </label>
-    <br/>
-    <input accept=".xlsx, .xls" id="upload-excel" type="file"/>
-   </div>
-  </div>
-  <form id="expense-form">
-   <input id="date" required="" type="date"/>
-   <select id="category" required="">
-    <option value="">
+<br/>
+<input accept=".xlsx, .xls" id="upload-excel" type="file"/>
+</div>
+</div>
+<form id="expense-form">
+<input id="date" required="" type="date"/>
+<select id="category" required="">
+<option value="">
      Pilih Kategori
     </option>
-    <optgroup label="Makanan &amp; Minuman">
-     <option value="Makan di luar">
+<optgroup label="Makanan &amp; Minuman">
+<option value="Makan di luar">
       Makan di luar
      </option>
-     <option value="Beli makanan online">
+<option value="Beli makanan online">
       Beli makanan online
      </option>
-     <option value="Bahan makanan">
+<option value="Bahan makanan">
       Bahan makanan
      </option>
-     <option value="Camilan &amp; kopi">
+<option value="Camilan &amp; kopi">
       Camilan &amp; kopi
      </option>
-     <option value="Langganan makanan">
+<option value="Langganan makanan">
       Langganan makanan
      </option>
-    </optgroup>
-    <optgroup label="Transportasi">
-     <option value="Bensin">
+</optgroup>
+<optgroup label="Transportasi">
+<option value="Bensin">
       Bensin / BBM
      </option>
-     <option value="Transportasi online">
+<option value="Transportasi online">
       Transportasi online
      </option>
-     <option value="Parkir">
+<option value="Parkir">
       Parkir
      </option>
-     <option value="Tol">
+<option value="Tol">
       Tol
      </option>
-     <option value="Servis kendaraan">
+<option value="Servis kendaraan">
       Servis kendaraan
      </option>
-     <option value="Cicilan kendaraan">
+<option value="Cicilan kendaraan">
       Cicilan kendaraan
      </option>
-     <option value="Angkutan umum">
+<option value="Angkutan umum">
       Angkutan umum
      </option>
-    </optgroup>
-    <optgroup label="Tempat Tinggal">
-     <option value="Sewa/KPR">
+</optgroup>
+<optgroup label="Tempat Tinggal">
+<option value="Sewa/KPR">
       Sewa / KPR
      </option>
-     <option value="Listrik">
+<option value="Listrik">
       Listrik
      </option>
-     <option value="Air">
+<option value="Air">
       Air
      </option>
-     <option value="Internet">
+<option value="Internet">
       Internet / Wi-Fi
      </option>
-     <option value="Gas">
+<option value="Gas">
       Gas
      </option>
-     <option value="Iuran lingkungan">
+<option value="Iuran lingkungan">
       Iuran RT / RW
      </option>
-    </optgroup>
-    <optgroup label="Tagihan &amp; Langganan">
-     <option value="Pulsa &amp; Data">
+</optgroup>
+<optgroup label="Tagihan &amp; Langganan">
+<option value="Pulsa &amp; Data">
       Pulsa &amp; Data
      </option>
-     <option value="Langganan digital">
+<option value="Langganan digital">
       Langganan digital
      </option>
-     <option value="Asuransi">
+<option value="Asuransi">
       Asuransi
      </option>
-     <option value="Tagihan Kartu Kredit">
+<option value="Tagihan Kartu Kredit">
       Tagihan Kartu Kredit
      </option>
-    </optgroup>
-    <optgroup label="Kesehatan">
-     <option value="Obat &amp; Vitamin">
+</optgroup>
+<optgroup label="Kesehatan">
+<option value="Obat &amp; Vitamin">
       Obat &amp; Vitamin
      </option>
-     <option value="Klinik/Dokter">
+<option value="Klinik/Dokter">
       Kunjungan Klinik / Dokter
      </option>
-     <option value="Check-up">
+<option value="Check-up">
       Medical Check-up
      </option>
-     <option value="BPJS">
+<option value="BPJS">
       BPJS / Asuransi Kesehatan
      </option>
-    </optgroup>
-    <optgroup label="Kebutuhan Pribadi">
-     <option value="Perawatan diri">
+</optgroup>
+<optgroup label="Kebutuhan Pribadi">
+<option value="Perawatan diri">
       Perawatan diri
      </option>
-     <option value="Pakaian">
+<option value="Pakaian">
       Pakaian &amp; Aksesori
      </option>
-     <option value="Perlengkapan mandi">
+<option value="Perlengkapan mandi">
       Perlengkapan mandi
      </option>
-    </optgroup>
-    <optgroup label="Hiburan &amp; Gaya Hidup">
-     <option value="Bioskop/Konser">
+</optgroup>
+<optgroup label="Hiburan &amp; Gaya Hidup">
+<option value="Bioskop/Konser">
       Bioskop / Konser
      </option>
-     <option value="Liburan">
+<option value="Liburan">
       Liburan
      </option>
-     <option value="Hobi">
+<option value="Hobi">
       Hobi
      </option>
-     <option value="Nongkrong">
+<option value="Nongkrong">
       Nongkrong
      </option>
-    </optgroup>
-    <optgroup label="Hewan Peliharaan">
-     <option value="Makanan hewan">
+</optgroup>
+<optgroup label="Hewan Peliharaan">
+<option value="Makanan hewan">
       Makanan Hewan
      </option>
-     <option value="Perawatan hewan">
+<option value="Perawatan hewan">
       Perawatan Hewan
      </option>
-     <option value="Kesehatan hewan">
+<option value="Kesehatan hewan">
       Kesehatan Hewan
      </option>
-     <option value="Mainan/aksesoris hewan">
+<option value="Mainan/aksesoris hewan">
       Mainan / Aksesoris Hewan
      </option>
-    </optgroup>
-    <optgroup label="Pendidikan &amp; Pengembangan Diri">
-     <option value="Buku &amp; Alat Tulis">
+</optgroup>
+<optgroup label="Pendidikan &amp; Pengembangan Diri">
+<option value="Buku &amp; Alat Tulis">
       Buku &amp; Alat Tulis
      </option>
-     <option value="Kursus">
+<option value="Kursus">
       Kursus / Webinar
      </option>
-     <option value="Peralatan belajar">
+<option value="Peralatan belajar">
       Peralatan belajar
      </option>
-    </optgroup>
-    <optgroup label="Keluarga &amp; Sosial">
-     <option value="Uang saku">
+</optgroup>
+<optgroup label="Keluarga &amp; Sosial">
+<option value="Uang saku">
       Uang saku keluarga
      </option>
-     <option value="Kado &amp; Hadiah">
+<option value="Kado &amp; Hadiah">
       Kado &amp; Hadiah
      </option>
-     <option value="Sumbangan &amp; Zakat">
+<option value="Sumbangan &amp; Zakat">
       Sumbangan &amp; Zakat
      </option>
-     <option value="Orang tua">
+<option value="Orang tua">
       Biaya Orang Tua
      </option>
-    </optgroup>
-    <optgroup label="Investasi &amp; Tabungan">
-     <option value="Tabungan">
+</optgroup>
+<optgroup label="Investasi &amp; Tabungan">
+<option value="Tabungan">
       Tabungan
      </option>
-     <option value="Investasi">
+<option value="Investasi">
       Investasi
      </option>
-     <option value="Dana darurat">
+<option value="Dana darurat">
       Dana Darurat
      </option>
-     <option value="Top-up e-wallet">
+<option value="Top-up e-wallet">
       Top-up e-Wallet Investasi
      </option>
-    </optgroup>
-    <optgroup label="Bisnis">
-     <option value="Modal usaha">
+</optgroup>
+<optgroup label="Bisnis">
+<option value="Modal usaha">
       Modal Usaha
      </option>
-     <option value="Stok barang">
+<option value="Stok barang">
       Belanja Stok Barang
      </option>
-     <option value="Operasional">
+<option value="Operasional">
       Biaya Operasional
      </option>
-     <option value="Gaji pegawai">
+<option value="Gaji pegawai">
       Gaji Pegawai
      </option>
-     <option value="Alat pendukung">
+<option value="Alat pendukung">
       Alat Pendukung Usaha
      </option>
-    </optgroup>
-   </select>
-   <input id="description" placeholder="Description" required="" type="text"/>
-   <input id="amount" placeholder="Amount (Rp)" required="" type="number"/>
-   <button type="submit">
+</optgroup>
+</select>
+<input id="description" placeholder="Description" required="" type="text"/>
+<input id="amount" placeholder="Amount (Rp)" required="" type="number"/>
+<button type="submit">
     Add
    </button>
-  </form>
-  <div class="filter-bar">
+</form>
+<div class="filter-bar">
    Filter:
    <select id="filter-category">
-    <option value="">
+<option value="">
      All Categories
     </option>
-   </select>
-   <select id="filter-month">
-    <option value="">
+</select>
+<select id="filter-month">
+<option value="">
      All Months
     </option>
-    <option value="01">
+<option value="01">
      Jan
     </option>
-    <option value="02">
+<option value="02">
      Feb
     </option>
-    <option value="03">
+<option value="03">
      Mar
     </option>
-    <option value="04">
+<option value="04">
      Apr
     </option>
-    <option value="05">
+<option value="05">
      May
     </option>
-    <option value="06">
+<option value="06">
      Jun
     </option>
-    <option value="07">
+<option value="07">
      Jul
     </option>
-    <option value="08">
+<option value="08">
      Aug
     </option>
-    <option value="09">
+<option value="09">
      Sep
     </option>
-    <option value="10">
+<option value="10">
      Oct
     </option>
-    <option value="11">
+<option value="11">
      Nov
     </option>
-    <option value="12">
+<option value="12">
      Dec
     </option>
-   </select>
-   <select id="filter-year">
-    <option value="">
+</select>
+<select id="filter-year">
+<option value="">
      All Years
     </option>
-   </select>
-   <button id="export-btn">
+</select>
+<button id="export-btn">
     Export to Excel
    </button>
-  </div>
-  <table id="expense-table">
-   <thead>
-    <tr>
-     <th>
+</div>
+<div class="filter-bar"><input id="search-input" placeholder="Cari deskripsi..." style="margin-right: 10px; padding: 5px; flex: 1" type="text"/></div><table id="expense-table">
+<thead>
+<tr>
+<th>
       Date
      </th>
-     <th>
+<th>
       Category
      </th>
-     <th>
+<th>
       Description
      </th>
-     <th>
+<th>
       Amount
      </th>
-     <th>
+<th>
       Action
      </th>
-     <!-- Tambahan -->
-    </tr>
-   </thead>
-   <tbody>
-   </tbody>
-  </table>
-  <div class="total-card">
-   <h3>
+<!-- Tambahan -->
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table><div class="filter-bar" style="margin-top: 10px;"><button id="backup-json">Backup JSON</button><input accept=".json" id="restore-json" style="margin-left: 10px;" type="file"/></div>
+<div class="total-card">
+<h3>
     Total Pengeluaran
    </h3>
-   <p id="total">
+<p id="total">
     Rp 0
    </p>
-  </div>
-  <canvas height="200" id="expenseChart" width="400">
-  </canvas>
-  <script src="script-chart.js">
-  </script>
-  <div class="modal" id="changelog-modal" style="display:none;">
-   <div class="modal-content">
-    <span class="close" id="close-changelog">
-     &times;
+</div>
+<div id="monthly-summary" style="margin-top: 20px; padding: 16px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 24px;">
+<h3>Ringkasan Bulanan</h3>
+<p><strong>Total:</strong> <span id="monthly-total">Rp 0</span></p>
+<p><strong>Kategori Tertinggi:</strong> <span id="top-category">-</span></p>
+</div><canvas height="200" id="expenseChart" width="400">
+</canvas>
+<script src="script-chart.js"></script>
+<div class="modal" id="changelog-modal" style="display:none;">
+<div class="modal-content">
+<span class="close" id="close-changelog">
+     ×
     </span>
-    <h2>
+<h2>
      Changelog
     </h2>
-    <ul>
-     <li>
-      <strong>
+<ul>
+<li><strong>28 Juli 2025</strong>: Penambahan template CSV &amp; Excel
+</li>
+<li><strong>28 Juli 2025</strong>: Penambahan fitur Search Bar, Edit (draft), Backup &amp; Restore JSON, Sort Kolom, dan Ringkasan Bulanan
+</li>
+<li>
+<strong>
        27 Juli 2025
       </strong>
-      : Initial creation of Expense Tracker
+      : Initial creation of Expense Tracker, Penambahan fitur Upload CSV &amp; Excel di dalam card, Perbaikan fitur delete data agar berfungsi dengan benar, 
+      Responsive layout untuk summary cards, 
      </li>
-     <li>
-      Penambahan fitur Upload CSV &amp; Excel di dalam card
-     </li>
-     <li>
-      Perbaikan fitur delete data agar berfungsi dengan benar
-     </li>
-     <li>
-      Responsive layout untuk summary cards
-     </li>
-     <li>
-      Penambahan tombol Changelog dan modal tampilan
-     </li>
-    </ul>
-   </div>
-  </div>
-  <script>
+</ul>
+</div>
+</div>
+<script>
    document.getElementById("open-changelog").addEventListener("click", function(e) {
   e.preventDefault();
   document.getElementById("changelog-modal").style.display = "block";
@@ -384,5 +383,58 @@ window.addEventListener("click", function(event) {
   }
 });
   </script>
- </body>
+<div class="modal" id="template-modal" style="display:none;">
+<div class="modal-content">
+<span class="close" id="close-template">×</span>
+<h2>Download Template</h2>
+<ul>
+<li><a download="" href="expense_template.csv">CSV Template</a></li>
+<li><a download="" href="expense_template.xlsx">EXCEL Template</a></li>
+</ul>
+</div>
+</div>
+<script>
+document.getElementById("open-template").addEventListener("click", function(e) {
+  e.preventDefault();
+  document.getElementById("template-modal").style.display = "block";
+});
+document.getElementById("close-template").addEventListener("click", function() {
+  document.getElementById("template-modal").style.display = "none";
+});
+window.addEventListener("click", function(event) {
+  const modal = document.getElementById("template-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
+</script>
+<div class="modal" id="update-modal" style="display:none;">
+<div class="modal-content">
+<span class="close" id="close-update">×</span>
+<h2>Update Transaksi</h2>
+<form id="update-form">
+<input id="update-id" type="hidden"/>
+<label for="update-date">Tanggal:</label><br/>
+<input id="update-date" required="" type="date"/><br/><br/>
+<label for="update-category">Kategori:</label><br/>
+<select id="update-category" required=""></select><br/><br/>
+<label for="update-description">Deskripsi:</label><br/>
+<input id="update-description" required="" type="text"/><br/><br/>
+<label for="update-amount">Jumlah (Rp):</label><br/>
+<input id="update-amount" required="" type="number"/><br/><br/>
+<button type="submit">Simpan Perubahan</button>
+</form>
+</div>
+</div>
+<script>
+document.getElementById("close-update").addEventListener("click", () => {
+  document.getElementById("update-modal").style.display = "none";
+});
+window.addEventListener("click", function(event) {
+  const modal = document.getElementById("update-modal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
+</script></body>
 </html>

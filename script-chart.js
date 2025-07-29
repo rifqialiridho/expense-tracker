@@ -137,7 +137,23 @@ function updateTable() {
     filteredExpenses = filteredExpenses.filter(e => e.date.split('-')[0] === yearVal);
   }
 
-  let sum = 0; // ✅ Tambahkan deklarasi di sini
+  let sum = 0;
+  const searchTerm = document.getElementById("search-input").value.toLowerCase();
+  if (searchTerm) {
+    filteredExpenses = filteredExpenses.filter(e => e.description.toLowerCase().includes(searchTerm));
+  }
+
+  if (currentSort.key) {
+    filteredExpenses.sort((a, b) => {
+      const valA = a[currentSort.key];
+      const valB = b[currentSort.key];
+      if (typeof valA === "number") return currentSort.asc ? valA - valB : valB - valA;
+      return currentSort.asc ? valA.localeCompare(valB) : valB.localeCompare(valA);
+    });
+  }
+
+  updateMonthlySummary(filteredExpenses);
+
 
   filteredExpenses.forEach((e, index) => {
     const row = tableBody.insertRow();
@@ -273,4 +289,134 @@ function formatDate(excelDate) {
   if (typeof excelDate === "string") return excelDate;
   const jsDate = new Date((excelDate - 25569) * 86400 * 1000);
   return jsDate.toISOString().split("T")[0];
+}
+
+
+// === Search Bar Filter ===
+document.getElementById("search-input").addEventListener("input", updateTable);
+
+// === Backup JSON ===
+document.getElementById("backup-json").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(expenses, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "expenses-backup.json";
+  link.click();
+  URL.revokeObjectURL(url);
+});
+
+// === Restore JSON ===
+document.getElementById("restore-json").addEventListener("change", function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    try {
+      const imported = JSON.parse(event.target.result);
+      if (Array.isArray(imported)) {
+        expenses.length = 0;
+        imported.forEach(e => expenses.push(e));
+        saveToLocalStorage();
+        updateTable();
+        updateChart();
+        populateCategoryFilter();
+      }
+    } catch (err) {
+      alert("File tidak valid!");
+    }
+  };
+  reader.readAsText(file);
+});
+
+// === Monthly Summary ===
+function updateMonthlySummary(filteredExpenses) {
+  let total = 0;
+  const categoryTotals = {};
+
+  filteredExpenses.forEach(e => {
+    total += e.amount;
+    if (!categoryTotals[e.category]) categoryTotals[e.category] = 0;
+    categoryTotals[e.category] += e.amount;
+  });
+
+  const topCategory = Object.entries(categoryTotals).sort((a,b) => b[1]-a[1])[0]?.[0] || "-";
+  document.getElementById("monthly-total").textContent = "Rp " + total.toLocaleString();
+  document.getElementById("top-category").textContent = topCategory;
+}
+
+// === Sorting ===
+let currentSort = { key: null, asc: true };
+document.querySelectorAll("#expense-table th").forEach((th, index) => {
+  th.style.cursor = "pointer";
+  th.addEventListener("click", () => {
+    const keys = ["date", "category", "description", "amount"];
+    const key = keys[index];
+    if (!key) return;
+
+    currentSort.asc = currentSort.key === key ? !currentSort.asc : true;
+    currentSort.key = key;
+    updateTable();
+  });
+});
+
+
+
+
+// ===== CSV & Excel Upload Handler Enhancement =====
+
+// Mapping fungsi untuk header fleksibel
+function mapHeaders(row) {
+  const map = {
+    'tanggal': 'Tanggal',
+    'date': 'Tanggal',
+    'kategori': 'Kategori',
+    'category': 'Kategori',
+    'deskripsi': 'Deskripsi',
+    'description': 'Deskripsi',
+    'jumlah': 'Jumlah',
+    'jumlah (rp)': 'Jumlah',
+    'amount': 'Jumlah'
+  };
+  const mapped = {};
+  for (const key in row) {
+    const normalized = key.toLowerCase().trim();
+    if (map[normalized]) {
+      mapped[map[normalized]] = row[key];
+    }
+  }
+  return mapped;
+}
+
+// Validasi baris
+function isValidRow(row) {
+  return (
+    row.Tanggal &&
+    row.Kategori &&
+    row.Deskripsi &&
+    row.Jumlah &&
+    !isNaN(parseFloat(row.Jumlah))
+  );
+}
+
+// Helper universal import
+function importExpenses(rows) {
+  const validRows = rows.map(mapHeaders).filter(isValidRow);
+  if (validRows.length === 0) {
+    alert("Tidak ada data valid yang bisa dimasukkan.");
+    return;
+  }
+  const newExpenses = validRows.map(row => ({
+    id: Date.now() + Math.random(),
+    date: row.Tanggal,
+    category: row.Kategori,
+    description: row.Deskripsi,
+    amount: parseFloat(row.Jumlah)
+  }));
+  expenses.push(...newExpenses);
+  saveToLocalStorage();
+  updateTable();
+  updateChart();
+  populateCategoryFilter();
 }
